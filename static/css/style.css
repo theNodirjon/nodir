@@ -14,23 +14,11 @@ Version: 1.1
 /** 1. VARIABLES
 --------------------------------------------------------------*/
 :root {
-  /* widths for rows and containers
-     */
+  /* widths for rows and containers */
   --header-height: 160px;
   --header-height-min: 80px;
-}
 
-/* on mobile devices below 600px
- */
-@media screen and (max-width: 600px) {
-  :root {
-    --header-height: 100px;
-    --header-height-min: 80px;
-  }
-}
-
-/* Theme Colors */
-:root {
+  /* Theme Colors */
   --accent-color: #C5A992;
   --secondary-color: #C5A992;
   --dark-color: #2f2f2f;
@@ -38,13 +26,22 @@ Version: 1.1
   --body-text-color: #757575;
   --light-text-color: #afafaf;
   --dark-text-color: #2f2f2f;
-}
 
-/* Fonts */
-:root {
+  /* Fonts */
   --body-font: "Raleway", sans-serif;
   --heading-font: "Prata", Georgia, serif;
   --secondary-font: "Playfair Display", Georgia, serif;
+
+  /* Border color (added variable) */
+  --bs-border-color: #ccc;
+}
+
+/* on mobile devices below 600px */
+@media screen and (max-width: 600px) {
+  :root {
+    --header-height: 100px;
+    --header-height-min: 80px;
+  }
 }
 
 /* Bootstrap variables */
@@ -99,7 +96,6 @@ Version: 1.1
   /* spacing */
   --bs-gutter-x: 2.5rem;
 }
-
 .display-1,
 .display-2,
 .display-3,
@@ -221,6 +217,22 @@ a {
   --bs-nav-link-hover-color: var(--bs-light);
   --bs-nav-link-active-color: var(--bs-light);
   --bs-navbar-active-color: var(--bs-light);
+}
+
+        /* Asosiy logout tugmasi stili */
+#logout-link {
+    text-decoration: none; /* Tagini yo'qotish */
+    color: black; /* Asosiy rang */
+    font-size: 16px;
+    font-weight: bold;
+    transition: color 0.1s ease, border-bottom 0.1s ease; /* O'tish effekti */
+}
+
+/* Sichqoncha olib borilganda qizil rang */
+#logout-link:hover {
+    color: red; /* Qizil rang */
+    border-bottom: 2px solid red; /* Qizil tag chizig'i */
+    cursor: pointer; /* Sichqoncha ko'rsatkichi pointer ko'rinishida */
 }
 
 /* accordion */
@@ -635,7 +647,7 @@ input[type="url"],
 input[type="password"],
 textarea,
 select {
-  padding: 6px 10px;
+  padding: 6px 17px;
   /* The 6px vertically centers text on FF, ignored by Webkit */
   background-color: #fff;
   border: 1px solid #D1D1D1;
@@ -1553,19 +1565,19 @@ button {
 /*--- Pattern Overlay
 -----------------------------------------------*/
 .pattern-overlay {
-  background-image: url(../images/pattern1.png);
+  background-image: url(static/images/pattern1.png);
   background-repeat: no-repeat;
   background-position: top right;
 }
 
 .leaf-pattern-overlay {
-  background-image: url(../images/leaf.png);
+  background-image: url(static/images/leaf.png);
   background-repeat: no-repeat;
   background-position: bottom left;
 }
 
 .corner-pattern-overlay {
-  background-image: url(../images/pattern2.png);
+  background-image: url(static/images/pattern2.png);
   background-repeat: no-repeat;
   background-position: top right;
 }
@@ -1730,9 +1742,8 @@ img.post-image {
 }
 
 .top-content .right-element .for-buy {
-  margin-right: 10px;
+  margin-right: 40px;
 }
-
 
 /* - Search Form hover Effects
 ------------------------------------------------------------- */
@@ -2397,6 +2408,55 @@ footer#footer {
 .product-style:hover button.add-to-cart {
   bottom: 380px;
   bottom: 0;
+}
+
+.button-container {
+    display: flex; /* Yonma-yon chiqarish */
+    justify-content: center; /* Markazga joylash */
+    align-items: center; /* Vertikal hizalash */
+    gap: 10px; /* Tugmalar orasidagi masofa */
+}
+
+/* Umumiy tugma uslubi */
+.add-to-cart.btn {
+    display: inline-flex; /* Ikonka va yozuvni yonma-yon qo‘yish */
+    align-items: center;
+    justify-content: center;
+    padding: 10px 20px;
+    font-size: 14px;
+    font-weight: bold;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    gap: 8px; /* Ikonka va yozuv orasidagi masofa */
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+/* Delete tugmasi */
+.add-to-cart.btn.delete {
+    background-color: red;
+    color: white;
+}
+
+.add-to-cart.btn.delete i {
+    color: white; /* Ikonka oq rangda */
+}
+
+/* Edit tugmasi */
+.add-to-cart.btn.edit {
+    background-color: rgba(102, 230, 102, 0.8);
+    color: black;
+    margin-bottom: 69px;
+}
+
+.add-to-cart.btn.edit i {
+    color: black; /* Ikonka qora rangda */
+}
+
+/* Hover effekti */
+.add-to-cart.btn:hover {
+    transform: scale(1.05);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
 .product-item figcaption {

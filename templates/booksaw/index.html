@@ -1,0 +1,514 @@
+{% extends 'booksaw/base.html' %}
+{% load custom_tags %}
+{% load static %}
+{% block title %}BookSaw{% endblock title %}
+{% block content %}
+<!--header-wrap-->
+
+	<section id="billboard">
+		<div class="container">
+			<div class="row">
+				<div class="col-md-12">
+					<button class="prev slick-arrow">
+						<i class="icon icon-arrow-left"></i>
+					</button>
+
+					<div class="main-slider pattern-overlay">
+                        {% for last_book in last_books %}
+						<div class="slider-item">
+							<div class="banner-content">
+								<h2 class="banner-title">{{ last_book.title }}</h2>
+								<p>{{ last_book.description }}</p>
+								<span>{{ last_book.author }}</span>
+								<div class="btn-wrap">
+									<a href="{% url 'apps:book_detail' last_book.pk %}" class="btn btn-outline-accent btn-accent-arrow">Read More<i
+											class="icon icon-ns-arrow-right"></i></a>
+								</div>
+							</div><!--banner-content-->
+							<img src="{{ last_book.book_image.url }}" alt="banner" class="banner-image" style="width: 342px; height: 488px">
+						</div><!--slider-item-->
+                        {% endfor %}
+					</div><!--slider-->
+
+					<button class="next slick-arrow">
+						<i class="icon icon-arrow-right"></i>
+					</button>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<section id="client-holder" data-aos="fade-up">
+		<div class="container">
+			<div class="row">
+				<div class="inner-content">
+					<div class="logo-wrap">
+						<div class="grid">
+							<a href="#"><img src="{% static 'images/client-image1.png' %}" alt="client"></a>
+							<a href="#"><img src="{% static 'images/client-image2.png' %}" alt="client"></a>
+							<a href="#"><img src="{% static 'images/client-image3.png' %}" alt="client"></a>
+							<a href="#"><img src="{% static 'images/client-image4.png' %}" alt="client"></a>
+							<a href="#"><img src="{% static 'images/client-image5.png' %}" alt="client"></a>
+						</div>
+					</div><!--image-holder-->
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<section id="featured-books" class="py-5 my-5">
+		<div class="container">
+			<div class="row">
+				<div class="col-md-12">
+
+					<div class="section-header align-center">
+						<div class="title">
+							<span>Some quality items</span>
+						</div>
+						<h2 class="section-title">Featured Books</h2>
+					</div>
+
+					<div class="product-list" data-aos="fade-up">
+						<div class="row">
+                            {% for featured_book in featured_books  %}
+							<div class="col-md-3">
+								<div class="product-item">
+									<figure class="product-style">
+                                        <a href="{% url 'apps:book_detail' featured_book.pk %}"><img src="{{ featured_book.book_image.url }}" alt="Books" class="product-item"></a>
+										<button type="button" class="add-to-cart" data-product-tile="add-to-cart" data-book-id="{{ featured_book.pk }}">Add to Cart</button>
+									</figure>
+									<figcaption>
+                                        <a href="{% url 'apps:book_detail' featured_book.pk %}"><h3>{{ featured_book.title }}</h3></a>
+										<span>{{ featured_book.author }}</span>
+										<div class="item-price">UZS {{ featured_book.price }}</div>
+									</figcaption>
+								</div>
+							</div>
+                            {% endfor %}
+						</div><!--ft-books-slider-->
+					</div><!--grid-->
+
+
+				</div><!--inner-content-->
+			</div>
+
+			<div class="row">
+				<div class="col-md-12">
+
+					<div class="btn-wrap align-right">
+						<a href="{% url 'apps:all_books' %}" class="btn-accent-arrow">View all products <i
+								class="icon icon-ns-arrow-right"></i></a>
+					</div>
+
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<section id="best-selling" class="leaf-pattern-overlay">
+		<div class="corner-pattern-overlay"></div>
+		<div class="container">
+			<div class="row justify-content-center">
+
+				<div class="col-md-8">
+
+					<div class="row">
+
+						<div class="col-md-6">
+							<figure class="products-thumb">
+								<img src="{% static 'images/single-image.jpg' %}" alt="book" class="single-image">
+							</figure>
+						</div>
+
+						<div class="col-md-6">
+							<div class="product-entry">
+								<h2 class="section-title divider">Best Selling Book</h2>
+
+								<div class="products-content">
+									<div class="author-name">By Timbur Hood</div>
+                                    <a href=""><h3 class="item-title">Birds gonna be happy</h3></a>
+									<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed eu feugiat amet,
+										libero ipsum enim pharetra hac.</p>
+									<div class="item-price">$ 45.00</div>
+									<div class="btn-wrap">
+										<a href="#" class="btn-accent-arrow">shop it now <i
+												class="icon icon-ns-arrow-right"></i></a>
+									</div>
+								</div>
+
+							</div>
+						</div>
+
+					</div>
+					<!-- / row -->
+
+				</div>
+
+			</div>
+		</div>
+	</section>
+
+    <section id="popular-books" class="bookshelf py-5 my-5">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <!-- Section Header -->
+                <div class="section-header align-center">
+                    <div class="title">
+                        <span>Some quality items</span>
+                    </div>
+                    <h2 class="section-title">Popular Books</h2>
+                </div>
+
+                <!-- Tabs -->
+                <ul class="tabs">
+                    <li data-tab-target="#all-genre" class="active tab">All Genre</li>
+                    {% for category in categories %}
+                        <li data-tab-target="#{{ category.name|slugify }}" class="tab">{{ category.name }}</li>
+                    {% endfor %}
+                </ul>
+
+                <!-- Tab Content -->
+                <div class="tab-content">
+                    <!-- All Genre Tab -->
+                    <div id="all-genre" data-tab-content class="active">
+                        <div class="row">
+                            {% for book in books %}
+                                <div class="col-md-3">
+                                    <div class="product-item">
+                                        <figure class="product-style">
+                                            <a href="{% url 'apps:book_detail' book.pk %}"><img src="{{ book.book_image.url }}" alt="Books" class="product-item"></a>
+                                            <button type="button" class="add-to-cart" data-product-tile="add-to-cart" data-book-id="{{ book.pk }}">
+                                                Add to Cart
+                                            </button>
+                                        </figure>
+                                        <figcaption>
+                                            <a href="{% url 'apps:book_detail' book.pk %}"><h3>{{ book.title }}</h3></a>
+                                            <span>{{ book.author }}</span>
+                                            <div class="item-price">UZS {{ book.price }}</div>
+                                        </figcaption>
+                                    </div>
+                                </div>
+                            {% empty %}
+                                <p>No books available.</p>
+                            {% endfor %}
+                        </div>
+                    </div>
+
+                    <!-- Dynamic Tabs for Categories -->
+                    {% for category in categories %}
+                        <div id="{{ category.name|slugify }}" data-tab-content>
+                            <h2>{{ category.name }}</h2>
+                            <div class="row">
+                                {% get_item category.name as book_filters %}
+                                {% for book_filter in book_filters %}
+                                    <div class="col-md-3">
+                                        <div class="product-item">
+                                            <figure class="product-style">
+                                                <a href="{% url 'apps:book_detail' book_filter.pk %}"><img src="{{ book_filter.book_image.url }}" alt="Books" class="product-item"></a>
+                                                <button type="button" class="add-to-cart" data-product-tile="add-to-cart" data-book-id="{{ book_filter.pk }}">
+                                                    Add to Cart
+                                                </button>
+                                            </figure>
+                                            <figcaption>
+                                                <a href="{% url 'apps:book_detail' book_filter.pk %}"><h3>{{ book_filter.title }}</h3></a>
+                                                <span>{{ book_filter.author }}</span>
+                                                <div class="item-price">UZS {{ book_filter.price }}</div>
+                                            </figcaption>
+                                        </div>
+                                    </div>
+                                {% empty %}
+                                    <p>No books available in this category.</p>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    {% endfor %}
+
+                </div>
+            </div>
+        </div>
+        <div class="row">
+				<div class="col-md-12">
+
+					<div class="btn-wrap align-right">
+						<a href="{% url 'apps:all_books' %}" class="btn-accent-arrow">View all products <i
+								class="icon icon-ns-arrow-right"></i></a>
+					</div>
+
+				</div>
+			</div>
+    </div>
+</section>
+
+	<section id="quotation" class="align-center pb-5 mb-5">
+		<div class="inner-content">
+			<h2 class="section-title divider">Quote of the day</h2>
+			<blockquote data-aos="fade-up">
+				<q>“The more that you read, the more things you will know. The more that you learn, the more places
+					you’ll go.”</q>
+				<div class="author-name">Dr. Seuss</div>
+			</blockquote>
+		</div>
+	</section>
+
+	<section id="special-offer" class="bookshelf pb-5 mb-5">
+
+		<div class="section-header align-center">
+			<div class="title">
+				<span>Grab your opportunity</span>
+			</div>
+			<h2 class="section-title">Books with offer</h2>
+		</div>
+
+		<div class="container">
+			<div class="row">
+				<div class="inner-content">
+					<div class="product-list" data-aos="fade-up">
+						<div class="grid product-grid">
+							<div class="product-item">
+								<figure class="product-style">
+									<img src="#" alt="Books" class="product-item">
+									<button type="button" class="add-to-cart" data-product-tile="add-to-cart">Add to
+										Cart</button>
+								</figure>
+								<figcaption>
+									<h3>Simple way of piece life</h3>
+									<span>Armor Ramsey</span>
+									<div class="item-price">
+										<span class="prev-price">$ 50.00</span>$ 40.00
+									</div>
+							</figcaption>
+                                </div>
+
+							<div class="product-item">
+								<figure class="product-style">
+									<img src="#" alt="Books" class="product-item">
+									<button type="button" class="add-to-cart" data-product-tile="add-to-cart">Add to
+										Cart</button>
+								</figure>
+								<figcaption>
+									<h3>Great travel at desert</h3>
+									<span>Sanchit Howdy</span>
+									<div class="item-price">
+										<span class="prev-price">$ 30.00</span>$ 38.00
+									</div>
+							</figcaption>
+                                </div>
+
+							<div class="product-item">
+								<figure class="product-style">
+									<img src="#" alt="Books" class="product-item">
+									<button type="button" class="add-to-cart" data-product-tile="add-to-cart">Add to
+										Cart</button>
+								</figure>
+								<figcaption>
+									<h3>The lady beauty Scarlett</h3>
+									<span>Arthur Doyle</span>
+									<div class="item-price">
+										<span class="prev-price">$ 35.00</span>$ 45.00
+									</div>
+							</figcaption>
+                                </div>
+
+							<div class="product-item">
+								<figure class="product-style">
+									<img src="#" alt="Books" class="product-item">
+									<button type="button" class="add-to-cart" data-product-tile="add-to-cart">Add to
+										Cart</button>
+								</figure>
+								<figcaption>
+									<h3>Once upon a time</h3>
+									<span>Klien Marry</span>
+									<div class="item-price">
+										<span class="prev-price">$ 25.00</span>$ 35.00
+									</div>
+							</figcaption>
+                                </div>
+
+							<div class="product-item">
+								<figure class="product-style">
+									<img src="#" alt="Books" class="product-item">
+									<button type="button" class="add-to-cart" data-product-tile="add-to-cart">Add to
+										Cart</button>
+								</figure>
+								<figcaption>
+									<h3>Simple way of piece life</h3>
+									<span>Armor Ramsey</span>
+									<div class="item-price">$ 40.00</div>
+								</figcaption>
+							</div>
+						</div><!--grid-->
+					</div>
+				</div><!--inner-content-->
+			</div>
+		</div>
+	</section>
+
+	<section id="subscribe">
+		<div class="container">
+			<div class="row justify-content-center">
+
+				<div class="col-md-8">
+					<div class="row">
+
+						<div class="col-md-6">
+
+							<div class="title-element">
+								<h2 class="section-title divider">Subscribe to our newsletter</h2>
+							</div>
+
+						</div>
+						<div class="col-md-6">
+
+							<div class="subscribe-content" data-aos="fade-up">
+								<p>Sed eu feugiat amet, libero ipsum enim pharetra hac dolor sit amet, consectetur. Elit
+									adipiscing enim pharetra hac.</p>
+								<form id="form">
+									<input type="text" name="email" placeholder="Enter your email addresss here">
+									<button class="btn-subscribe">
+										<span>send</span>
+										<i class="icon icon-send"></i>
+									</button>
+								</form>
+							</div>
+
+						</div>
+
+					</div>
+				</div>
+
+			</div>
+		</div>
+	</section>
+
+	<section id="latest-blog" class="py-5 my-5">
+		<div class="container">
+			<div class="row">
+				<div class="col-md-12">
+
+					<div class="section-header align-center">
+						<div class="title">
+							<span>Read our articles</span>
+						</div>
+						<h2 class="section-title">Latest Articles</h2>
+					</div>
+
+					<div class="row">
+
+						<div class="col-md-4">
+
+							<article class="column" data-aos="fade-up">
+
+								<figure>
+									<a href="#" class="image-hvr-effect">
+										<img src="#" alt="post" class="post-image">
+									</a>
+								</figure>
+
+								<div class="post-item">
+									<div class="meta-date">Mar 30, 2021</div>
+									<h3><a href="#">Reading books always makes the moments happy</a></h3>
+
+									<div class="links-element">
+										<div class="categories">inspiration</div>
+										<div class="social-links">
+											<ul>
+												<li>
+													<a href="#"><i class="icon icon-facebook"></i></a>
+												</li>
+												<li>
+													<a href="#"><i class="icon icon-twitter"></i></a>
+												</li>
+												<li>
+													<a href="#"><i class="icon icon-behance-square"></i></a>
+												</li>
+											</ul>
+										</div>
+									</div><!--links-element-->
+
+								</div>
+							</article>
+
+						</div>
+						<div class="col-md-4">
+
+							<article class="column" data-aos="fade-up" data-aos-delay="200">
+								<figure>
+									<a href="#" class="image-hvr-effect">
+										<img src="#" alt="post" class="post-image">
+									</a>
+								</figure>
+								<div class="post-item">
+									<div class="meta-date">Mar 29, 2021</div>
+									<h3><a href="#">Reading books always makes the moments happy</a></h3>
+
+									<div class="links-element">
+										<div class="categories">inspiration</div>
+										<div class="social-links">
+											<ul>
+												<li>
+													<a href="#"><i class="icon icon-facebook"></i></a>
+												</li>
+												<li>
+													<a href="#"><i class="icon icon-twitter"></i></a>
+												</li>
+												<li>
+													<a href="#"><i class="icon icon-behance-square"></i></a>
+												</li>
+											</ul>
+										</div>
+									</div><!--links-element-->
+
+								</div>
+							</article>
+
+						</div>
+						<div class="col-md-4">
+
+							<article class="column" data-aos="fade-up" data-aos-delay="400">
+								<figure>
+									<a href="#" class="image-hvr-effect">
+										<img src="#" alt="post" class="post-image">
+									</a>
+								</figure>
+								<div class="post-item">
+									<div class="meta-date">Feb 27, 2021</div>
+									<h3><a href="#">Reading books always makes the moments happy</a></h3>
+
+									<div class="links-element">
+										<div class="categories">inspiration</div>
+										<div class="social-links">
+											<ul>
+												<li>
+													<a href="#"><i class="icon icon-facebook"></i></a>
+												</li>
+												<li>
+													<a href="#"><i class="icon icon-twitter"></i></a>
+												</li>
+												<li>
+													<a href="#"><i class="icon icon-behance-square"></i></a>
+												</li>
+											</ul>
+										</div>
+									</div><!--links-element-->
+
+								</div>
+							</article>
+
+						</div>
+
+					</div>
+
+					<div class="row">
+
+						<div class="btn-wrap align-center">
+							<a href="#" class="btn btn-outline-accent btn-accent-arrow" tabindex="0">Read All Articles<i
+									class="icon icon-ns-arrow-right"></i></a>
+						</div>
+					</div>
+
+				</div>
+			</div>
+		</div>
+	</section>
+{% endblock content %}

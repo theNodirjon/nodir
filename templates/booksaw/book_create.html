@@ -1,0 +1,94 @@
+{% extends 'booksaw/base.html' %}
+
+{% block content %}
+<section class="container mt-5">
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+
+        <div class="row mb-3">
+            <div class="col-md-6">
+                <label for="id_title" class="form-label">Title:</label>
+                <input type="text" name="title" maxlength="250" required class="form-control" id="id_title" value="{{ form.instance.title|default:'' }}">
+            </div>
+            <div class="col-md-6">
+                <label for="id_author" class="form-label">Author:</label>
+                <select name="author" required class="form-select" id="id_author">
+                    <option value="" {% if not form.instance.author %}selected{% endif %}>---------</option>
+                    {% for author in form.base_fields.author.queryset %}
+                    <option value="{{ author.id }}" {% if form.instance.author == author %}selected{% endif %}>{{ author }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+        </div>
+
+        <div class="row mb-3">
+            <div class="col-md-6">
+                <label for="id_price" class="form-label">Price:</label>
+                <input type="number" name="price" step="0.01" required class="form-control" id="id_price" value="{{ form.instance.price|default:'' }}">
+            </div>
+            <div class="col-md-6">
+                <label for="id_category" class="form-label">Category:</label>
+                <select name="category" id="id_category" multiple class="form-select">
+                    {% for category in form.base_fields.category.queryset %}
+                    <option value="{{ category.id }}" {% if category in form.instance.category.all %}selected{% endif %}>{{ category }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+        </div>
+
+        <div class="row mb-3">
+            <div class="col-md-6">
+                <label for="id_format" class="form-label">Format:</label>
+                <select name="format" required class="form-select" id="id_format">
+                    <option value="" {% if not form.instance.format %}selected{% endif %}>---------</option>
+                    {% for format in form.base_fields.format.choices %}
+                    <option value="{{ format.0 }}" {% if form.instance.format == format.0 %}selected{% endif %}>{{ format.1 }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="col-md-6">
+                <label for="id_availability" class="form-label">Availability:</label>
+                <select name="availability" required class="form-select" id="id_availability">
+                    <option value="" {% if not form.instance.availability %}selected{% endif %}>---------</option>
+                    {% for availability in form.base_fields.availability.choices %}
+                    <option value="{{ availability.0 }}" {% if form.instance.availability == availability.0 %}selected{% endif %}>{{ availability.1 }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+        </div>
+
+        <div class="row mb-3">
+            <div class="col-md-6">
+                <label for="id_book_image" class="form-label">Book image:</label>
+                <input type="file" name="book_image" accept="image/*" class="form-control" id="id_book_image">
+            </div>
+            <div class="col-md-6">
+                <label for="id_description" class="form-label">Description:</label>
+                <textarea name="description" cols="40" rows="5" class="form-control" id="id_description">{{ form.instance.description|default:'' }}</textarea>
+            </div>
+        </div>
+
+        <div class="row mb-3">
+            <div class="col-md-6">
+                <label for="id_publisher" class="form-label">Publisher:</label>
+                <input type="text" name="publisher" maxlength="250" class="form-control" id="id_publisher" value="{{ form.instance.publisher|default:'' }}">
+            </div>
+            <div class="col-md-6">
+                <label for="id_isbn" class="form-label">ISBN:</label>
+                <input type="text" name="isbn" maxlength="250" required class="form-control" id="id_isbn" value="{{ form.instance.isbn|default:'' }}">
+            </div>
+        </div>
+
+        <div class="row mb-3">
+            <div class="col-md-6">
+                <label for="id_quantity" class="form-label">Quantity:</label>
+                <input type="number" name="quantity" min="0" required class="form-control" id="id_quantity" value="{{ form.instance.quantity|default:'' }}">
+            </div>
+        </div>
+
+        <div class="text-end">
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </div>
+    </form>
+</section>
+{% endblock %}

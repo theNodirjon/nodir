@@ -1,0 +1,173 @@
+{% extends 'booksaw/base.html' %}
+{% block extra_style %}
+    <style>
+        .v-box {
+            padding: 20px;
+            width: 500px;
+            text-align: center;
+            margin: 200px auto;
+
+        }
+
+        .v-box h1 {
+            margin-bottom: 15px;
+        }
+
+        .v-box p {
+            margin-bottom: 20px;
+        }
+
+        .code-inputs {
+            display: flex;
+            justify-content: space-evenly;
+            margin-bottom: 20px;
+        }
+
+        .code-inputs input {
+            width: 50px;
+            height: 50px;
+            text-align: center;
+            font-size: 20px;
+            border: 2px solid #ddd;
+            border-radius: 10px;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        .code-inputs input:focus {
+            border-color: #C5A992;
+        }
+
+        .code-inputs span {
+            font-size: 25px;
+        }
+
+        .verify-btn {
+            border-radius: 15px;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: 0.3s ease-in-out;
+            height: 50px;
+            width: 400px;
+            font-weight: bold;
+            letter-spacing: 1px;
+        }
+
+        .verify-btn:hover {
+            letter-spacing: 4px;
+        }
+
+        .resend-btn {
+            display: none;
+            text-decoration-color: #2f2f2f;
+            text-decoration: underline !important;
+            cursor: pointer;
+            margin: auto;
+        }
+    </style>
+{% endblock %}
+{% block header %}
+
+{% endblock %}
+{% block content %}
+    <div class="container">
+        <div class="v-box">
+            <h1>Verify Your Email</h1>
+            <p>Please enter the 6-digit code we sent to your email {{ user.email }}.</p>
+            {% if messages %}
+                <ul class="messages" style="color: red; font-weight: bold;">
+                    {% for message in messages %}
+                        <li class="{{ message.tags }}">{{ message }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+            <form method="post" id="verification-form">
+                {% csrf_token %}
+                <div class="code-inputs">
+                    <input type="text" maxlength="1" name="code1" id="code1" required>
+                    <input type="text" maxlength="1" name="code2" id="code2" required>
+                    <input type="text" maxlength="1" name="code3" id="code3" required>
+                    <span>-</span>
+                    <input type="text" maxlength="1" name="code4" id="code4" required>
+                    <input type="text" maxlength="1" name="code5" id="code5" required>
+                    <input type="text" maxlength="1" name="code6" id="code6" required>
+                </div>
+
+                <p id="timer" style="margin-top: 10px;">Resend code in <span id="countdown">60</span> seconds.</p>
+                <button id="resend-btn" class="btn" onclick="resendCode()">Resend Code</button>
+                <button type="submit" class="verify-btn btn btn-outline-primary">Verify</button>
+            </form>
+        </div>
+    </div>
+    <script>
+        const inputs = document.querySelectorAll('.code-inputs input');
+
+        inputs.forEach((input, index) => {
+            // Handle single character input
+            input.addEventListener('input', (e) => {
+                const value = e.target.value;
+                if (value && index < inputs.length - 1) {
+                    inputs[index + 1].focus();
+                }
+            });
+
+            // Handle backspace for previous input
+            input.addEventListener('keydown', (e) => {
+                if (e.key === 'Backspace' && !input.value && index > 0) {
+                    inputs[index - 1].focus();
+                }
+            });
+
+            // Handle paste event
+            input.addEventListener('paste', (e) => {
+                const pasteData = e.clipboardData.getData('text');
+                if (/^\d{6}$/.test(pasteData)) { // Check if exactly 6 digits
+                    const digits = pasteData.split('');
+                    inputs.forEach((input, idx) => {
+                        input.value = digits[idx] || ''; // Fill inputs with digits
+                    });
+                    inputs[inputs.length - 1].focus(); // Focus on the last input
+                }
+                e.preventDefault();
+            });
+        });
+
+        // Countdown Timer
+        let countdownElement = document.getElementById('countdown');
+        let resendButton = document.getElementById('resend-btn');
+        let timerElement = document.getElementById('timer');
+        let countdown = 3;
+
+        function startCountdown() {
+            const interval = setInterval(() => {
+                countdown--;
+                countdownElement.textContent = countdown;
+
+                if (countdown <= 0) {
+                    clearInterval(interval);
+                    timerElement.style.display = 'none';
+                    resendButton.style.display = 'block';
+                }
+            }, 1000);
+        }
+
+        // Resend Code Logic
+        function resendCode() {
+            // Add your logic to resend the code here (e.g., send an AJAX request to the backend).
+            alert('Verification code resent!');
+
+            // Reset the countdown
+            countdown = 60;
+            countdownElement.textContent = countdown;
+            timerElement.style.display = 'block';
+            resendButton.style.display = 'none';
+
+            // Restart the countdown
+            startCountdown();
+        }
+
+        // Start the countdown on page load
+        startCountdown();
+    </script>
+{% endblock %}

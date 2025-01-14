@@ -1,0 +1,209 @@
+{% extends 'booksaw/base.html' %}
+{% load static %}
+{% block title %}BookDetail{% endblock title %}
+{% block content %}
+<link rel="stylesheet" type="text/css" href="{% static 'assets/css/book_detail.css' %}">
+
+    <section id="book-detail" class="py-5 my-5">
+        <div class="container">
+            <div class="row" style="text-align: center;">
+                <div class="col-md-5">
+                    <img src="{{ book.book_image.url }}" alt="Book Cover" class="img-fluid rounded book-cover" style="width: 342px; height: 488px;">
+                </div>
+                <div class="col-md-7">
+                    <h1 class="book-title mb-3">{{ book.title }}</h1>
+                    <p class="book-author mb-3">By <span class="author-name">{{ book.author }}</span></p>
+                    <div class="book-rating mb-3">
+                        <span class="rating-value">({{ book.average_rating }})</span>
+                        <span class="stars">
+                            <i class="icon icon-star-full">🌟</i>
+                        </span>
+                    </div>
+                    <p class="book-price mb-3">UZS {{ book.price }}</p>
+                    <p class="book-availability mb-3">Availability: <span class="availability">{{ book.availability }}</span></p>
+                    <p class="book-format mb-3">Format: <span class="format">{{ book.format }}</span></p>
+                    <div class="book-description">
+                        {% if book.description %}
+                        <h3>Description</h3>
+                        <p>{{ book.description }}</p>
+                        {% endif %}
+                    <div class="book-actions mb-4">
+                        <button class="btn btn-primary add-to-cart"   data-url="#" data-book-id="{{ book.pk }}">Add to Cart</button>
+                    </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="book-details" class="py-5 bg-light">
+        <div class="container">
+            <h2 class="section-title mb-4">Book Details</h2>
+            <div class="row">
+                <div class="col-md-6">
+                    {% if book.quantity %}
+                    <p><strong>Quantity:</strong> <span class="published-date">{{ book.quantity }}</span></p>
+                    {% endif %}
+                    <p><strong>Category:</strong> {% for category in categories %}<span class="category">{{ category }} | </span>{% endfor %}</p>
+                    {% if book.pages %}
+                    <p><strong>Pages:</strong> <span class="page-count">{{ book.pages }}</span></p>
+                    {% endif %}
+                </div>
+                <div class="col-md-6">
+                    {% if book.isbn %}
+                    <p><strong>ISBN:</strong> <span class="isbn">{{ book.isbn }}</span></p>
+                    {% endif %}
+                    {% if book.language %}
+                    <p><strong>Language:</strong> <span class="language">{{ book.language }}</span></p>
+                    {% endif %}
+                    {% if book.publisher %}
+                    <p><strong>Publisher:</strong> <span class="publisher">{{ book.publisher }}</span></p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="reviews" class="py-5">
+        <div class="container">
+            <h2 class="section-title mb-4">Customer Reviews</h2>
+            
+            <div id="review-form" class="mb-4">
+                <h3 class="h5">Write a Review</h3>
+                <form id="new-review-form" method="post">{% csrf_token %}
+                    <div class="row g-3">
+                        <div class="col-md-4">
+                            <select class="form-select form-select-sm" name="rating"  id="review-rating" required>
+                                <option value="">Select a rating</option>
+                                <option value="5">⭐⭐⭐⭐⭐</option>
+                                <option value="4">⭐⭐⭐⭐</option>
+                                <option value="3">⭐⭐⭐</option>
+                                <option value="2">⭐⭐</option>
+                                <option value="1">⭐</option>
+                            </select>
+                        </div>
+                        <div class="col-12">
+                            <textarea class="form-control form-control-sm" id="review-text" rows="3" placeholder="Your Review" name="text" required></textarea>
+                        </div>
+                        <div class="col-md-4">
+                            <button type="submit" class="btn btn-primary btn-sm w-100">Submit Review</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+
+            <div id="reviews-container">
+            {% if reviews %}
+                {% for review in reviews %}
+                <div class="review">
+                    <p><span class="review-author">{{ review.user }}</span> - <span class="review-date">{{ review.created_at | date:"F j, Y, g:i a"  }}</span></p>
+                    <p>{{ review.text }}</p>
+                    {% for i in "12345"|slice:review.rating %}
+                    <span class="star filled" style="color: gold;">★</span>
+                    {% endfor %}
+                </div>
+                {% endfor %}
+                {% else %}
+                <div class="review">
+                <p>No reviews yet.</p>
+                </div>
+            {% endif %}
+            </div>
+        </div>
+    </section>
+
+   <section id="special-offer" class="bookshelf pb-5 mb-5">
+
+		<div class="section-header align-center">
+			<div class="title">
+				<span>Grab your opportunity</span>
+			</div>
+			<h2 class="section-title">Books with offer</h2>
+		</div>
+
+		<div class="container">
+			<div class="row">
+				<div class="inner-content">
+					<div class="product-list" data-aos="fade-up">
+						<div class="grid product-grid">
+							<div class="product-item">
+								<figure class="product-style">
+									<img src="#" alt="Books" class="product-item">
+									<button type="button" class="add-to-cart" data-product-tile="add-to-cart" data-book-id="{{ book.pk }}" data-url="#"> Add to Cart</button>
+								</figure>
+								<figcaption>
+									<h3>Simple way of piece life</h3>
+									<span>Armor Ramsey</span>
+									<div class="item-price">
+										<span class="prev-price">$ 50.00</span>$ 40.00
+									</div>
+							</figcaption>
+                                </div>
+
+							<div class="product-item">
+								<figure class="product-style">
+									<img src="#" alt="Books" class="product-item">
+									<button type="button" class="add-to-cart" data-product-tile="add-to-cart">Add to
+										Cart</button>
+								</figure>
+								<figcaption>
+									<h3>Great travel at desert</h3>
+									<span>Sanchit Howdy</span>
+									<div class="item-price">
+										<span class="prev-price">$ 30.00</span>$ 38.00
+									</div>
+							</figcaption>
+                                </div>
+
+							<div class="product-item">
+								<figure class="product-style">
+									<img src="#" alt="Books" class="product-item">
+									<button type="button" class="add-to-cart" data-product-tile="add-to-cart">Add to
+										Cart</button>
+								</figure>
+								<figcaption>
+									<h3>The lady beauty Scarlett</h3>
+									<span>Arthur Doyle</span>
+									<div class="item-price">
+										<span class="prev-price">$ 35.00</span>$ 45.00
+									</div>
+							</figcaption>
+                                </div>
+
+							<div class="product-item">
+								<figure class="product-style">
+									<img src="#" alt="Books" class="product-item">
+									<button type="button" class="add-to-cart" data-product-tile="add-to-cart">Add to
+										Cart</button>
+								</figure>
+								<figcaption>
+									<h3>Once upon a time</h3>
+									<span>Klien Marry</span>
+									<div class="item-price">
+										<span class="prev-price">$ 25.00</span>$ 35.00
+									</div>
+							</figcaption>
+                                </div>
+
+							<div class="product-item">
+								<figure class="product-style">
+									<img src="#" alt="Books" class="product-item">
+									<button type="button" class="add-to-cart" data-product-tile="add-to-cart">Add to
+										Cart</button>
+								</figure>
+								<figcaption>
+									<h3>Simple way of piece life</h3>
+									<span>Armor Ramsey</span>
+									<div class="item-price">$ 40.00</div>
+								</figcaption>
+							</div>
+						</div><!--grid-->
+					</div>
+				</div><!--inner-content-->
+			</div>
+		</div>
+	</section>
+
+    <script src="{% static 'assets/js/book_detail.js' %}"></script>
+{% endblock content %}

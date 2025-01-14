@@ -1,0 +1,86 @@
+{% extends 'booksaw/base.html' %}
+{% load custom_tags %}
+{% load static %}
+{% block title %}AllBooks{% endblock title %}
+{% block content %}
+	<section id="popular-books" class="bookshelf py-5 my-5">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <!-- Section Header -->
+                <div class="section-header align-center">
+                    <div class="title">
+                        <span>All Books</span>
+                    </div>
+                    <h2 class="section-title">All Books Here</h2>
+                </div>
+                
+                <!-- Tabs -->
+                <ul class="tabs">
+                    <li data-tab-target="#all-genre" class="active tab">All Genre</li>
+                    {% for category in categories %}
+                        <li data-tab-target="#{{ category.name|slugify }}" class="tab">{{ category.name }}</li>
+                    {% endfor %}
+                </ul>
+
+                <!-- Tab Content -->
+                <div class="tab-content">
+                    <!-- All Genre Tab -->
+                    <div id="all-genre" data-tab-content class="active">
+                        <div class="row">
+                            {% for book in books %}
+                                <div class="col-md-3">
+                                    <div class="product-item">
+                                        <figure class="product-style">
+                                            <a href="{% url 'apps:book_detail' book.pk %}"><img src="{{ book.book_image.url }}" alt="Books" class="product-item"></a>
+                                            <button type="button" class="add-to-cart" data-product-tile="add-to-cart" data-book-id="{{ book.pk }}">
+                                                Add to Cart
+                                            </button>
+                                        </figure>
+                                        <figcaption>
+                                            <a href="{% url 'apps:book_detail' book.pk %}"><h3>{{ book.title }}</h3></a>
+                                            <span>{{ book.author }}</span>
+                                            <div class="item-price">UZS {{ book.price }}</div>
+                                        </figcaption>
+                                    </div>
+                                </div>
+                            {% empty %}
+                                <p>No books available.</p>
+                            {% endfor %}
+                        </div>
+                    </div>
+
+                    <!-- Dynamic Tabs for Categories -->
+                    {% for category in categories %}
+                        <div id="{{ category.name|slugify }}" data-tab-content>
+                            <h2>{{ category.name }}</h2>
+                            <div class="row">
+                                {% get_item_book category.name as book_filters %}    
+                                {% for book_filter in book_filters %}
+                                    <div class="col-md-3">
+                                        <div class="product-item">
+                                            <figure class="product-style">
+                                                <a href="{% url 'apps:book_detail' book_filter.pk %}"><img src="{{ book_filter.book_image.url }}" alt="Books" class="product-item"></a>
+                                                <button type="button" class="add-to-cart" data-product-tile="add-to-cart" data-book-id="{{ book_filter.pk }}">
+                                                    Add to Cart
+                                                </button>
+                                            </figure>
+                                            <figcaption>
+                                                <a href="{% url 'apps:book_detail' book_filter.pk %}"><h3>{{ book_filter.title }}</h3></a>
+                                                <span>{{ book_filter.author }}</span>
+                                                <div class="item-price">UZS {{ book_filter.price }}</div>
+                                            </figcaption>
+                                        </div>
+                                    </div>
+                                {% empty %}
+                                    <p>No books available in this category.</p>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

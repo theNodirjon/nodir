@@ -1,0 +1,272 @@
+{% extends 'booksaw/base.html' %}
+{% load custom_tags %}
+{% load static %}
+{% block title %}My Profile{% endblock title %}
+{% block content %}
+    <style>
+    /* Profile Container */
+/* Profile Container */
+.profile-container {
+    max-width: 1200px !important;
+    margin: 0 auto !important;
+    padding: 2rem !important;
+    font-family: Arial, sans-serif !important;
+}
+
+/* Header Styles */
+.profile-header {
+    text-align: center !important;
+    margin-bottom: 3rem !important;
+}
+
+.profile-title {
+    font-size: 4rem !important;
+    margin-bottom: 1rem !important;
+    color: #333 !important;
+}
+
+.profile-subtitle {
+    font-size: 1.2rem !important;
+    color: #666 !important;
+}
+
+/* Content Layout */
+.profile-content-wrapper {
+    display: grid !important;
+    grid-template-columns: 1fr 1.5fr 1fr !important;
+    gap: 2rem !important;
+    align-items: start !important;
+}
+
+/* Profile Image */
+.profile-image-container {
+    background-color: #f5e6d3 !important;
+    border-radius: 20px !important;
+    overflow: hidden !important;
+}
+
+.profile-avatar {
+    width: 100% !important;
+    height: auto !important;
+    display: block !important;
+}
+
+/* About Section */
+.profile-about {
+    padding: 1rem !important;
+}
+
+.profile-section-title {
+    color: #666 !important;
+    margin-bottom: 1.5rem !important;
+    font-size: 1.8rem !important;
+}
+
+.profile-about-text {
+    line-height: 1.6 !important;
+    color: #333 !important;
+}
+
+/* Details Section */
+.profile-details {
+    padding: 1rem !important;
+}
+
+.profile-details-content {
+    margin-bottom: 2rem !important;
+}
+
+.profile-detail-item {
+    margin-bottom: 1.5rem !important;
+}
+
+.profile-detail-label {
+    color: #666 !important;
+    margin-bottom: 0.5rem !important;
+    font-size: 1.1rem !important;
+}
+
+.profile-detail-value {
+    color: #333 !important;
+    line-height: 1.4 !important;
+}
+
+/* Social Links */
+.profile-social-links {
+    display: flex !important;
+    gap: 1rem !important;
+    margin-top: 2rem !important;
+}
+
+.profile-social-link {
+    color: #333 !important;
+    font-size: 1.2rem !important;
+    text-decoration: none !important;
+    transition: color 0.3s ease !important;
+}
+
+.profile-social-link:hover {
+    color: #666 !important;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .profile-content-wrapper {
+        grid-template-columns: 1fr !important;
+    }
+
+    .profile-image-container {
+        max-width: 400px !important;
+        margin: 0 auto !important;
+    }
+
+    .profile-container {
+        padding: 1rem !important;
+    }
+
+    .profile-title {
+        font-size: 3rem !important;
+    }
+}
+
+    </style>
+<main class="profile-container">
+    <header class="profile-header">
+        <h1 class="profile-title">Hello!</h1>
+        <p class="profile-subtitle"><strong>{{ profile.username }}</strong></p>
+    </header>
+
+    <div class="profile-content-wrapper">
+        <div class="profile-image-container">
+            <img class="profile-avatar" src="{% static 'images/Screenshot 2024-08-14 142211.png' %}" alt="{{ profile.name }}'s profile picture">
+        </div>
+
+        <section class="profile-about">
+            <h2 class="profile-section-title">About Me</h2>
+            <p class="profile-about-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Laborum, natus!</p>
+            <div class="profile-detail-item">
+                    <h3 class="profile-detail-label">Email:</h3>
+                    <p class="profile-detail-value">{{ profile.email }}</p>
+                </div>
+        </section>
+
+        <section class="profile-details">
+            <h2 class="profile-section-title">Details</h2>
+            <div class="profile-details-content">
+                <div class="profile-detail-item">
+                    <h3 class="profile-detail-label">Name:</h3>
+                    <p class="profile-detail-value">{{ profile.name }}</p>
+                </div>
+                <div class="profile-detail-item">
+                    <h3 class="profile-detail-label">Age:</h3>
+                    <p class="profile-detail-value">19 years</p>
+                </div>
+            </div>
+
+            <div class="profile-social-links">
+                <a href="#" class="profile-social-link" target="_blank" rel="noopener noreferrer">
+                    <i class="fab fa-facebook-f"></i>
+                </a>
+                <a href="#" class="profile-social-link" target="_blank" rel="noopener noreferrer">
+                    <i class="fab fa-twitter"></i>
+                </a>
+                <a href="#" class="profile-social-link" target="_blank" rel="noopener noreferrer">
+                    <i class="fab fa-instagram"></i>
+                </a>
+            </div>
+        </section>
+    </div>
+</main>
+	<section id="popular-books" class="bookshelf py-5 my-5">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <!-- Section Header -->
+                <div class="section-header align-center">
+                    <div class="title">
+                        <span>All Books</span>
+                    </div>
+                    <h2 class="section-title">Your Books Here</h2>
+                </div>
+                
+                <!-- Tabs -->
+                <ul class="tabs">
+                    <li data-tab-target="#all-genre" class="active tab">All Genre</li>
+                    {% for category in categories %}
+                        <li data-tab-target="#{{ category.name|slugify }}" class="tab">{{ category.name }}</li>
+                    {% endfor %}
+                </ul>
+                <!-- Tab Content -->
+                <div class="tab-content">
+                    <!-- All Genre Tab -->
+                    <div id="all-genre" data-tab-content class="active">
+                        <div class="row">
+                            {% for book in books %}
+                                <div class="col-md-3">
+                                    <div class="product-item">
+                                        <figure class="product-style">
+                                            <a href="{% url 'apps:book_detail' book.pk %}"><img src="{{ book.book_image.url }}" alt="Books" class="product-item"></a>
+                                            <div class="button-container">
+                                                <form action="{% url 'apps:book_delete' book.pk %}"><button type="submit" class="add-to-cart btn delete">
+                                                    <i class="fa fa-trash"></i> Delete
+                                                </button></form>
+                                                <form action="{% url 'apps:book_update' book.pk %}">
+                                                <button type="submit" class="add-to-cart btn edit">
+                                                    <i class="fa fa-pencil"></i> Edit
+                                                </button></form>
+                                            </div>
+                                        </figure>
+                                        <figcaption>
+                                            <a href="{% url 'apps:book_detail' book.pk %}"><h3>{{ book.title }}</h3></a>
+                                            <span>{{ book.author }}</span>
+                                            <div class="item-price">UZS {{ book.price }}</div>
+                                        </figcaption>
+                                    </div>
+                                </div>
+                            {% empty %}
+                                <p>No books available.</p>
+                            {% endfor %}
+                        </div>
+                    </div>
+
+                    <!-- Dynamic Tabs for Categories -->
+                    {% for category in categories %}
+                        <div id="{{ category.name|slugify }}" data-tab-content>
+                            <h2>{{ category.name }}</h2>
+                            <div class="row">
+                                {% get_my_book category.name as book_filters %}    
+                                {% for book_filter in book_filters %}
+                                    <div class="col-md-3">
+                                        <div class="product-item">
+                                            <figure class="product-style">
+                                                <a href="{% url 'apps:book_detail' book_filter.pk %}"><img src="{{ book_filter.book_image.url }}" alt="Books" class="product-item"></a>
+                                                <div class="button-container">
+                                                <form action="{% url 'apps:book_delete' book_filter.pk %}"><button type="submit" class="add-to-cart btn delete">
+                                                    <i class="fa fa-trash"></i> Delete
+                                                </button></form>
+                                                <form action="{% url 'apps:book_update' book_filter.pk %}">
+                                                <button type="submit" class="add-to-cart btn edit">
+                                                    <i class="fa fa-pencil"></i> Edit
+                                                </button></form>
+                                            </div>
+                                            </figure>
+                                            <figcaption>
+                                                <a href="{% url 'apps:book_detail' book_filter.pk %}"><h3>{{ book_filter.title }}</h3></a>
+                                                <span>{{ book_filter.author }}</span>
+                                                <div class="item-price">UZS {{ book_filter.price }}</div>
+                                            </figcaption>
+                                        </div>
+                                    </div>
+                                {% empty %}
+                                    <p>No books available in this category.</p>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+{% endblock %}

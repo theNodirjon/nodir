@@ -1,0 +1,108 @@
+/* Book Detail Styles */
+.book-cover {
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+.book-title {
+    font-size: 2.5rem;
+    font-weight: bold;
+    color: #333;
+}
+
+.book-author {
+    font-size: 1.2rem;
+    color: #666;
+}
+
+.book-rating .stars {
+    color: #ffc107;
+}
+
+.book-rating .rating-value {
+    color: #666;
+    margin-left: 5px;
+}
+
+.book-price {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #28a745;
+}
+
+.book-availability, .book-format {
+    font-size: 1rem;
+    color: #666;
+}
+
+.book-actions .btn {
+    margin-right: 10px;
+}
+
+.book-description {
+    margin-top: 20px;
+}
+
+/* Book Details Styles */
+.section-title {
+    font-size: 2rem;
+    color: #333;
+    margin-bottom: 20px;
+}
+
+/* Reviews Styles */
+#review-form {
+    background-color: #f8f9fa;
+    border-radius: 5px;
+    padding: 15px;
+    margin-bottom: 20px;
+}
+
+#review-form h3 {
+    margin-bottom: 15px;
+    font-size: 1.1rem;
+}
+
+#review-form .form-control-sm,
+#review-form .form-select-sm,
+#review-form .btn-sm {
+    font-size: 0.875rem;
+}
+
+.review {
+    background-color: #f8f9fa;
+    border-radius: 5px;
+    padding: 15px;
+    margin-bottom: 15px;
+}
+
+.review .review-author {
+    font-weight: bold;
+}
+
+.review .review-date {
+    color: #666;
+    font-size: 0.9rem;
+}
+
+/* Related Books Styles */
+#related-books .card {
+    transition: transform 0.3s;
+}
+
+#related-books .card:hover {
+    transform: translateY(-5px);
+}
+
+.card-img-top {
+    height: 200px;
+    object-fit: cover;
+}
+
+.card-title {
+    font-size: 1.1rem;
+    font-weight: bold;
+}
+
+.card-text {
+    font-size: 0.9rem;
+}
